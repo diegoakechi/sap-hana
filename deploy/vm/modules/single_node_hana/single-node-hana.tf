@@ -1,5 +1,10 @@
 # Configure the Microsoft Azure Provider
-provider "azurerm" {} #TODO(pabowers): add ability to specify subscription
+provider "azurerm" {
+  subscription_id = "c4106f40-4f28-442e-b67f-a24d892bf7ad"
+  client_id="52a63a75-7e16-4bf4-9fb9-632db9171b02"
+  client_secret = "c02a67c5-4468-4543-9f1b-0618f42dd657"
+  tenant_id="72f988bf-86f1-41af-91ab-2d7cd011db47"
+}
 
 module "common_setup" {
   source = "../common_setup"
@@ -11,20 +16,30 @@ module "common_setup" {
   useHana2          = "${var.useHana2}"
 }
 
-module "create_db" {
-  source = "../create_db_node"
+# module "create_db" {
+#   source = "../create_db_node"
 
-  az_resource_group         = "${module.common_setup.resource_group_name}"
-  az_region                 = "${var.az_region}"
-  db_num                    = "${var.db_num}"
-  hana_subnet_id            = "${module.common_setup.vnet_subnets[0]}"
-  nsg_id                    = "${module.common_setup.nsg_id}"
-  public_ip_allocation_type = "${var.public_ip_allocation_type}"
-  sap_sid                   = "${var.sap_sid}"
-  sshkey_path_public        = "${var.sshkey_path_public}"
-  storage_disk_sizes_gb     = "${var.storage_disk_sizes_gb}"
-  vm_user                   = "${var.vm_user}"
-  vm_size                   = "${var.vm_size}"
+#   az_resource_group         = "${module.common_setup.resource_group_name}"
+#   az_region                 = "${var.az_region}"
+#   db_num                    = "${var.db_num}"
+#   hana_subnet_id            = "${module.common_setup.vnet_subnets[0]}"
+#   nsg_id                    = "${module.common_setup.nsg_id}"
+#   public_ip_allocation_type = "${var.public_ip_allocation_type}"
+#   sap_sid                   = "${var.sap_sid}"
+#   sshkey_path_public        = "${var.sshkey_path_public}"
+#   storage_disk_sizes_gb     = "${var.storage_disk_sizes_gb}"
+#   vm_user                   = "${var.vm_user}"
+#   vm_size                   = "${var.vm_size}"
+# }
+
+module "bastion_host" {
+  source            = "../bastion_host"
+  az_resource_group = "${module.common_setup.resource_group_name}"
+  az_region         = "${var.az_region}"
+  sap_sid           = "${var.sap_sid}"
+  subnet_id         = "${module.common_setup.vnet_subnets[1]}"
+  bastion_username  = "${var.bastion_username}"
+  pw_bastion        = "${var.pw_bastion}"
 }
 
 module "configure_vm" {
@@ -41,8 +56,8 @@ module "configure_vm" {
   pw_os_sidadm          = "${var.pw_os_sidadm}"
   pw_db_system          = "${var.pw_db_system}"
   useHana2              = "${var.useHana2}"
-  vms_configured        = "${module.create_db.machine_hostname}"
-
+  # vms_configured        = "${module.create_db.machine_hostname}, ${module.bastion_host.ip}"
+  vms_configured      = "${module.bastion_host.ip}, ${module.bastion_host.machine_hostname}"
   url_xsa_runtime     = "${var.url_xsa_runtime}"
   url_di_core         = "${var.url_di_core}"
   url_sapui5          = "${var.url_sapui5}"

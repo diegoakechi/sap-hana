@@ -143,3 +143,13 @@ variable "vm_size" {
 variable "vm_user" {
   description = "The username of your HANA database VM."
 }
+
+variable "bastion_username" {
+  description = "The username for the bastion host"
+  default     = "landscape"
+}
+
+variable "pw_bastion" {
+  description = "The password for the bastion host"
+  default     = "LandScape123"
+}
