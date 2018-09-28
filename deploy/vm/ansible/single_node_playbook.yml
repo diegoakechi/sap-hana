@@ -1,24 +1,24 @@
 ---
-# - hosts: db0
-#   become: true
-#   roles:
-#     - disk-setup
-#     - saphana-install
-#     - { role: xsa-install, when: install_xsa == true }
-#     - { role: cockpit-download, when: install_xsa == true and install_cockpit == true }
+- hosts: db0
+  become: true
+  roles:
+    - disk-setup
+    - saphana-install
+    - { role: xsa-install, when: install_xsa == true }
+    - { role: cockpit-download, when: install_xsa == true and install_cockpit == true }
 
-# - hosts: db0
-#   become: true
-#   become_user: "{{ sap_sid|lower }}adm"
-#   roles:
-#     - { role: shine-install, when: install_xsa == true and install_shine == true }
-#     - { role: cockpit-install, when: install_xsa == true and install_cockpit == true }
+- hosts: db0
+  become: true
+  become_user: "{{ sap_sid|lower }}adm"
+  roles:
+    - { role: shine-install, when: install_xsa == true and install_shine == true }
+    - { role: cockpit-install, when: install_xsa == true and install_cockpit == true }
 
 - hosts: bastion
   connection: winrm
   vars:
-    ansible_user: landscape
-    ansible_password: LandScape123
+    ansible_user: "{{ bastion_username }}"
+    ansible_password: "{{ pw_bastion }}"
     ansible_connection: winrm
     ansible_winrm_transport: ntlm
     ansible_winrm_server_cert_validation: ignore

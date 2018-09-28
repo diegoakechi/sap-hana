@@ -74,4 +74,6 @@ module "configure_vm" {
   url_cockpit         = "${var.url_cockpit}"
   url_sapcar_windows  = "${var.url_sapcar_windows}"
   url_hana_studio     = "${var.url_hana_studio}"
+  bastion_username    = "${var.bastion_username}"
+  pw_bastion          = "${var.pw_bastion}"
 }
