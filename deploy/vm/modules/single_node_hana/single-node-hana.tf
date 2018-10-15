@@ -1,14 +1,13 @@
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
-  subscription_id = "c4106f40-4f28-442e-b67f-a24d892bf7ad"
-  client_id="52a63a75-7e16-4bf4-9fb9-632db9171b02"
-  client_secret = "c02a67c5-4468-4543-9f1b-0618f42dd657"
-  tenant_id="72f988bf-86f1-41af-91ab-2d7cd011db47"
+  subscription_id = "${var.az_subscription_id}"
+  client_id       = "${var.az_client_id}"
+  client_secret   = "${var.az_client_secret}"
+  tenant_id       = "${var.az_tenant_id}"
 }
 
 module "common_setup" {
-  source = "../common_setup"
-
+  source            = "../common_setup"
   az_region         = "${var.az_region}"
   az_resource_group = "${var.az_resource_group}"
   sap_instancenum   = "${var.sap_instancenum}"
@@ -57,6 +56,7 @@ module "configure_vm" {
   pw_db_system          = "${var.pw_db_system}"
   useHana2              = "${var.useHana2}"
   vms_configured        = "${module.create_db.machine_hostname}, ${module.bastion_host.machine_hostname}"
+
   # vms_configured      = "${module.bastion_host.ip}, ${module.bastion_host.machine_hostname}"
   url_xsa_runtime     = "${var.url_xsa_runtime}"
   url_di_core         = "${var.url_di_core}"

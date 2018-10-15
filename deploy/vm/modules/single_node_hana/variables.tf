@@ -3,10 +3,30 @@ variable "ansible_playbook_path" {
   default     = "../../ansible/single_node_playbook.yml"
 }
 
+variable "az_client_id" {
+  description = "The id for this Azure client"
+}
+
+variable "az_client_secret" {
+  description = "The secret for the Azure client given in az_client_id"
+}
+
 variable "az_region" {}
 
 variable "az_resource_group" {
-  description = "Which azure resource group to deploy the HANA setup into.  i.e. <myResourceGroup>"
+  description = "Which Azure resource group to deploy the HANA setup into.  i.e. <myResourceGroup>"
+}
+
+variable "az_subscription_id" {
+  description = "The id for this Azure subscription"
+}
+
+variable "az_tenant_id" {
+  description = "The id for this Azure tenant"
+}
+
+variable "bastion_username" {
+  description = "The username for the bastion host"
 }
 
 variable "db_num" {
@@ -36,6 +56,10 @@ variable "install_xsa" {
 variable "public_ip_allocation_type" {
   description = "Defines whether the IP address is static or dynamic. Options are Static or Dynamic."
   default     = "Dynamic"
+}
+
+variable "pw_bastion" {
+  description = "The password for the bastion host"
 }
 
 variable "pw_db_system" {
@@ -96,6 +120,10 @@ variable "url_di_core" {
   default     = ""
 }
 
+variable "url_hana_studio" {
+  description = "URL for the Windows version of HANA Studio to install on the bastion host"
+}
+
 variable "url_portal_services" {
   description = "URL for Portal Services"
   default     = ""
@@ -109,6 +137,10 @@ variable "url_sap_hdbserver" {
 variable "url_sap_sapcar" {
   type        = "string"
   description = "The URL that points to the SAPCAR bits"
+}
+
+variable "url_sapcar_windows" {
+  description = "URL for SAPCAR for Windows to run on the bastion host"
 }
 
 variable "url_sapui5" {
@@ -142,20 +174,4 @@ variable "vm_size" {
 
 variable "vm_user" {
   description = "The username of your HANA database VM."
-}
-
-variable "bastion_username" {
-  description = "The username for the bastion host"
-}
-
-variable "pw_bastion" {
-  description = "The password for the bastion host"
-}
-
-variable "url_sapcar_windows" {
-  description = "URL for SAPCAR for Windows to run on the bastion host"
-}
-
-variable "url_hana_studio" {
-  description = "URL for the Windows version of HANA Studio to install on the bastion host"
 }

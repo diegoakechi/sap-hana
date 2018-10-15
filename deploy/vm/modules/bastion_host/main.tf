@@ -1,5 +1,5 @@
-
 resource "azurerm_network_security_group" "windows_bastion_nsg" {
+  count               = "${var.windows_bastion ? 1 : 0}"
   name                = "windows_bastion_nsg"
   location            = "${var.az_region}"
   resource_group_name = "${var.az_resource_group}"
@@ -16,7 +16,7 @@ resource "azurerm_network_security_group" "windows_bastion_nsg" {
     destination_address_prefix = "*"
   }
 
-    security_rule {
+  security_rule {
     name                       = "winrm"
     priority                   = 110
     direction                  = "Inbound"
@@ -33,19 +33,25 @@ resource "azurerm_network_security_group" "windows_bastion_nsg" {
   }
 }
 
+locals {
+  nsg_id = "${var.windows_bastion ? azurerm_network_security_group.windows_bastion_nsg.id : local.empty_string}"
+}
+
 module "nic_and_pip_setup" {
   source = "../generic_nic_and_pip"
 
   az_resource_group         = "${var.az_resource_group}"
   az_region                 = "${var.az_region}"
+  enable                    = "${var.windows_bastion}"
   name                      = "${local.machine_name}"
-  nsg_id                    = "${azurerm_network_security_group.windows_bastion_nsg.id}"
+  nsg_id                    = "${local.nsg_id}"
   subnet_id                 = "${var.subnet_id}"
   public_ip_allocation_type = "dynamic"
 }
 
 resource "azurerm_virtual_machine" "windows_bastion" {
   name                  = "${local.machine_name}"
+  count                 = "${var.windows_bastion ? 1 : 0}"
   location              = "${var.az_region}"
   resource_group_name   = "${var.az_resource_group}"
   network_interface_ids = ["${module.nic_and_pip_setup.nic_id}"]
@@ -76,6 +82,7 @@ resource "azurerm_virtual_machine" "windows_bastion" {
 
   os_profile_secrets {
     source_vault_id = "${azurerm_key_vault.main.id}"
+
     vault_certificates {
       certificate_url   = "${azurerm_key_vault_certificate.main.secret_id}"
       certificate_store = "My"
@@ -84,13 +91,16 @@ resource "azurerm_virtual_machine" "windows_bastion" {
 
   os_profile_windows_config {
     provision_vm_agent = true
+
     winrm {
       protocol = "Http"
     }
+
     winrm {
-      protocol = "Https"
-      certificate_url   = "${azurerm_key_vault_certificate.main.secret_id}"
+      protocol        = "Https"
+      certificate_url = "${azurerm_key_vault_certificate.main.secret_id}"
     }
+
     # Auto-Login's required to configure WinRM
     additional_unattend_config {
       pass         = "oobeSystem"

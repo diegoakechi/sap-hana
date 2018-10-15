@@ -1,5 +1,6 @@
 # Create public IPs
 resource "azurerm_public_ip" "pip" {
+  count                        = "${var.enable ? 1 : 0}"
   name                         = "${var.name}-pip"
   location                     = "${var.az_region}"
   resource_group_name          = "${var.az_resource_group}"
@@ -15,6 +16,7 @@ resource "azurerm_public_ip" "pip" {
 
 # Create network interface
 resource "azurerm_network_interface" "nic" {
+  count                     = "${var.enable ? 1 : 0}"
   depends_on                = ["azurerm_public_ip.pip"]
   name                      = "${var.name}-nic"
   location                  = "${var.az_region}"

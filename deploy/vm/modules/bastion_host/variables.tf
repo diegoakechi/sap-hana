@@ -25,6 +25,12 @@ variable "subnet_id" {
   description = "The id of the subnet the bastion host will be in.  This should be different than the HANA vms."
 }
 
+variable "windows_bastion" {
+  description = "Whether or not you want a windows bastion host"
+  default     = false
+}
+
 locals {
   machine_name = "${lower(var.sap_sid)}-bastion"
+  empty_string = ""
 }

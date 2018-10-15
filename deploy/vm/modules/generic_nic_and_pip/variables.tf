@@ -10,6 +10,11 @@ variable "backend_ip_pool_ids" {
   default     = []
 }
 
+variable "enable" {
+  default     = true
+  description = "Lets you disable creation of these resources"
+}
+
 variable "name" {
   description = "A name that will be used to identify the resource this NIC and PIP are related to."
 }

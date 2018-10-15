@@ -1,4 +1,10 @@
-provider "azurerm" {}
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  subscription_id = "${var.az_subscription_id}"
+  client_id       = "${var.az_client_id}"
+  client_secret   = "${var.az_client_secret}"
+  tenant_id       = "${var.az_tenant_id}"
+}
 
 module "common_setup" {
   source = "../common_setup"
@@ -182,4 +188,8 @@ module "configure_vm" {
   install_xsa                    = "${var.install_xsa}"
   install_shine                  = "${var.install_shine}"
   install_cockpit                = "${var.install_cockpit}"
+  url_sapcar_windows             = "${var.url_sapcar_windows}"
+  url_hana_studio                = "${var.url_hana_studio}"
+  bastion_username               = "${var.bastion_username}"
+  pw_bastion                     = "${var.pw_bastion}"
 }
