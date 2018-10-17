@@ -1,0 +1,46 @@
+# HANA Single-Node Instance
+
+This simple scenario deploys a single-node HANA instance and an optional bastion host in the Azure Cloud.
+
+## Table of contents
+
+- [Features](#features)
+- [Usage](#usage)
+
+## Features
+
+The following options can be customized in the single-node scenario:
+
+* **Version**
+  * HANA 1.0 SPS12 (PL15 or higher)
+  * HANA 2.0 SPS2 or higher
+* **Database containers**
+  * Single container (HANA 1.0 only)
+  * Multi-database containers (MDC)
+* **Bastion host**
+  * No bastion host
+  * Windows bastion host (including HANA Studio)
+  * Linux bastion host (including HANA Studio)
+* **Applications**
+  * XSA
+    * [SAP HANA Cockpit](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.03/en-US/da25cad976064dc0a24a1b0ee9b62525.html)
+    * [SHINE Demo Content](https://blogs.saphana.com/2014/03/10/shine-sap-hana-interactive-education/)
+
+## Usage
+
+1. If you haven't already done so, please make sure you [prepare your Azure Cloud Shell](https://github.com/Azure/sap-hana#preparing-your-azure-cloud-shell).
+
+2. Next, [download the required SAP packages and make them accessible](https://github.com/Azure/sap-hana#getting-the-sap-packages).
+
+ *(**Note**: Please review the [list of SAP downloads](https://github.com/Azure/sap-hana#required-sap-downloads); depending on which features and applications you would like to include in your HANA installation, you may need additional packages.)*
+
+3. In your Azure Cloud Shell, change into the directory for the HANA single-node scenario:
+
+    ```sh
+    cd sap-hana/deploy/vm/modules/single_node_hana/
+
+4. Create a `terraform.tfvars` file for your deployment. You can use the provided [Boilerplate template](terraform.tfvars) for single-node scenarios as a starting point and adjust the variables according to your requirements.
+
+5. Now, [run the deployment](https://github.com/Azure/sap-hana#running-the-deployment) of your HANA single-node instance. You can [verify the installation](https://github.com/Azure/sap-hana#verifying-the-deployment) afterwards.
+
+6. Should you wish to delete your HANA single-node instance at a later point, you can simply [follow the general instructions on the overview page](https://github.com/Azure/sap-hana#deleting-the-deployment).
