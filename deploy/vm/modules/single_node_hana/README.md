@@ -2,6 +2,8 @@
 
 This simple scenario deploys a single-node HANA instance and an optional bastion host in the Azure Cloud.
 
+<img src="https://raw.githubusercontent.com/Azure/sap-hana/2899be649c1582e0a14d7d03b95944d2a3befaa8/sld-single.png" alt="Landscape Diagram" width="450"/>
+
 ## Table of contents
 
 - [Features](#features)
@@ -11,20 +13,22 @@ This simple scenario deploys a single-node HANA instance and an optional bastion
 
 The following options can be customized in the single-node scenario:
 
-* **Version**
-  * HANA 1.0 SPS12 (PL15 or higher)
-  * HANA 2.0 SPS2 or higher
-* **Database containers**
-  * Single container (HANA 1.0 only)
-  * Multi-database containers (MDC)
-* **Bastion host**
-  * No bastion host
-  * Windows bastion host (including HANA Studio)
-  * Linux bastion host (including HANA Studio)
-* **Applications**
-  * XSA
-    * [SAP HANA Cockpit](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.03/en-US/da25cad976064dc0a24a1b0ee9b62525.html)
-    * [SHINE Demo Content](https://blogs.saphana.com/2014/03/10/shine-sap-hana-interactive-education/)
+| Option  | Description | Template parameter  |
+| ------------ | ------------------------ | ------------ |
+| **HANA version**  <td colspan=3> *Which version of HDB Server to install*
+|   | HANA 1.0 SPS12 (PL13 or higher)  | `useHana2 = false`  |
+|   | HANA 2.0 SPS2 or higher  | `useHana2 = true`  |
+| **Database containers**  <td colspan=3> *Whether to install HDB with single or multiple database containers (tenants)*
+|   | Single container (HANA 1.0 only)  | `hdb_mdc = false`  |
+|   | Multi-database containers (MDC)  | `hdb_mdc = true`   |
+| **Bastion host**  <td colspan=3> *Whether to deploy a bastion host ("jump box") through which the HANA VM can be accessed*
+|   | No bastion host  | `bastion = "none"`  |
+|   | Windows bastion host (incl. HANA Studio)  | `bastion = "windows"`  |
+|   | Linux bastion host (incl. HANA Studio)  | `bastion = "linux"`  |
+| **SAP Applications**  <td colspan=3> *Which SAP applications to install on top of HANA (if any)*
+|   | XSA  | `install_xsa = true`  |
+|   | [SAP HANA Cockpit](https://help.sap.com/viewer/6b94445c94ae495c83a19646e7c3fd56/2.0.03/en-US/da25cad976064dc0a24a1b0ee9b62525.html) (requires XSA) | `install_cockpit = true`  |
+|   | [SHINE Demo Content](https://blogs.saphana.com/2014/03/10/shine-sap-hana-interactive-education/) (requires XSA)  | `install_shine = true`  |
 
 ## Usage
 
